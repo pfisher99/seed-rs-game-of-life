@@ -128,21 +128,6 @@ impl Model {
         }
 }
 
-/*
-impl fmt::Display for Model {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for line in self.cells.as_slice().chunks(self.width as usize) {
-            for &cell in line {
-                let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
-                write!(f, "{}", symbol)?;
-            }
-            write!(f, "\n");
-        }
-        Ok(())
-    }
-}
-*/
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Cell {
     Dead = 0,
@@ -217,10 +202,6 @@ fn view(model: &Model) -> Node<Msg> {
 
         div![attrs!{At::Class => "gameclass"}, model.get_string()],
         
-        //raw!["<script>let i = 0; while (i < 100000) {document.getElementById(\"counter\").click(); i++; } </script>"]
-        //raw!["<script> document.getElementById(\"counter\").click()</script>"],
-        //div![]
-        //div![ev(Ev::from("autocount"), |_| Msg::Increment)],
         ]
 }
 
