@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="modulepreload" href="/coding/game-of-life-rust/pkg/my_project.js" as="script" type="text/javascript">
+    <link rel="preload" href="/coding/game-of-life-rust/pkg/my_project_bg.wasm" as="fetch" type="application/wasm" crossorigin="anonymous">
+    <style>
+        body {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: normal;
+          justify-content: left;
+        }
+
+        .gameclass {
+          position: absolute;
+          top: 355px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: normal;
+          justify-content: center;
+          white-space: pre-wrap;
+          line-height: 9px;
+          font-size: 10px;
+        }
+
+      </style>
+</head>
+
+<body>
+    <section id="app"></section>
+    <script type="module">
+        import init from '/coding/game-of-life-rust/pkg/my_project.js';
+        init('/coding/game-of-life-rust/pkg/my_project_bg.wasm');
+    </script>
+</body>
+
+</html>
