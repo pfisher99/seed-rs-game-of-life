@@ -308,14 +308,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ee1c47aaa256ecabcaea351eae4a9b01ef39ed810004e298d2511ed284b1525"
 
 [[package]]
-name = "my-project"
-version = "0.1.0"
-dependencies = [
- "seed",
- "wasm-bindgen-test",
-]
-
-[[package]]
 name = "percent-encoding"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -477,6 +469,14 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+]
+
+[[package]]
+name = "seed-rs-page"
+version = "0.1.0"
+dependencies = [
+ "seed",
+ "wasm-bindgen-test",
 ]
 
 [[package]]

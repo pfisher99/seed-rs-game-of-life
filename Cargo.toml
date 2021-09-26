@@ -1,9 +1,9 @@
 [package]
 version = "0.1.0"
-name = "my-project"
+name = "seed-rs-page"
 repository = ""
-authors = ["Fish <patrick.fisher99@gmail.com>"]
-description = "App Description"
+authors = ["Fish <patrick@thepatrickfisher.com>"]
+description = "WebApp Homepage"
 categories = ["category"]
 license = "MIT"
 readme = "./README.md"
