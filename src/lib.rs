@@ -157,7 +157,7 @@ pub enum Cell {
 #[derive(Copy, Clone)]
 // `Msg` describes the different events you can modify state with.
 enum Msg {
-    Increment,
+    //Increment,
     Start,
     Tick(RenderInfo),
     Stop
@@ -167,7 +167,7 @@ enum Msg {
 fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
     match msg 
         {
-            Msg::Increment => {model.tick(); model.counter += 1;}
+            //Msg::Increment => {model.tick(); model.counter += 1;}
         
             Msg::Start => 
             {
