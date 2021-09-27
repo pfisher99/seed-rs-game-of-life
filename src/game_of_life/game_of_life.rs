@@ -1,12 +1,25 @@
-use crate::Context;
 use seed::{prelude::*, *};
+
+
+const GAMEOFLIFE: &str = "game-of-life";
 
 // ------ ------
 //     Init
 // ------ ------
 
 pub fn init(mut url: Url) -> Option<Model> {
+    Some (Model::new())
+}
 
+// ------ ------
+//     Urls
+// ------ ------
+
+struct_urls!();
+impl<'a> Urls<'a> {
+    pub fn default(self) -> Url {
+        self.base_url().add_path_part(GAMEOFLIFE)
+    }
 }
 
 // ------ ------
@@ -175,8 +188,9 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 //     View
 // ------ ------
 
-pub fn view<Ms>(model: &Model, ctx: &Context) -> Node<Ms> {
-    
+pub fn view<Ms>(model: &Model) -> Node<Msg> {
+
+
     div![
         "Ticks: ",
         C!["counter"],
