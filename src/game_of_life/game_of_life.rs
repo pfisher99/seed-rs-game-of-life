@@ -1,37 +1,25 @@
-// (Lines like the one below ignore selected Clippy rules
-//  - it's useful when you want to check your code with `cargo make verify`
-// but some rules are too "annoying" or are not applicable for your case.)
-#![allow(clippy::wildcard_imports)]
-
-mod game_of_life;
-
+use crate::Context;
 use seed::{prelude::*, *};
 
 // ------ ------
 //     Init
 // ------ ------
 
-// `init` describes what should happen when your app started.
-fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
+pub fn init(mut url: Url) -> Option<Model> {
 
-    //orders.after_next_render(Msg::Increment);
-    Model::new()
 }
 
 // ------ ------
 //     Model
 // ------ ------
 
-// `Model` describes our app state.
-struct Model {
+pub struct Model {
     width: u32,
     height: u32,
     cells: Vec<Cell>,
     counter: u32,
     stop: bool
 }
-
-
 
 impl Model {
     fn new() -> Model {
@@ -136,17 +124,6 @@ pub enum Cell {
     Alive = 1,
 }
 
-
-// ------ ------
-//    Pages
-// ------ ------
-
-enum Page {
-    Home,
-    GameOfLife(),
-    NotFound
-}
-
 // ------ ------
 //    Update
 // ------ ------
@@ -193,19 +170,14 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         } 
         
 }
-    
-    
-
 
 // ------ ------
 //     View
 // ------ ------
 
-// `view` describes what to display.
-fn view(model: &Model) -> Node<Msg> {
+pub fn view<Ms>(model: &Model, ctx: &Context) -> Node<Ms> {
     
-
-        div![
+    div![
         "Ticks: ",
         C!["counter"],
         attrs!{ At::Id => "counter"}, model.counter,
@@ -216,15 +188,4 @@ fn view(model: &Model) -> Node<Msg> {
         div![attrs!{At::Class => "gameclass"}, model.get_string()],
         
         ]
-}
-
-// ------ ------
-//     Start
-// ------ ------
-
-// (This function is invoked by `init` function in `index.html`.)
-#[wasm_bindgen(start)]
-pub fn start() {
-    // Mount the `app` to the element with the `id` "app".
-    App::start("app", init, update, view);
 }
