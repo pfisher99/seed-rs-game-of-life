@@ -3,7 +3,7 @@
 // but some rules are too "annoying" or are not applicable for your case.)
 #![allow(clippy::wildcard_imports)]
 
-mod game_of_life;
+mod page;
 
 use seed::{prelude::*, *};
 
@@ -18,10 +18,12 @@ fn init(url: Url, orders: &mut impl Orders<Msg>) -> Model {
     
     orders.subscribe(Msg::UrlChanged);
 
+    
     Model {
     base_url: url.to_base_url(),
     page: Page::init(url),
     }
+    
 
 }
 
@@ -42,7 +44,7 @@ struct Model {
 
 enum Page {
     Home,
-    GameOfLife(game_of_life::game_of_life::Model),
+    GameOfLife(page::game_of_life::Model),
     NotFound
 }
 
@@ -50,7 +52,7 @@ impl Page {
     fn init(mut url: Url) -> Self {
         match url.next_path_part() {
             None => Self::Home,
-            Some(GAMEOFLIFE) => game_of_life::game_of_life::init(url).map_or(Self::NotFound, Self::GameOfLife),
+            Some(GAMEOFLIFE) => page::game_of_life::init(url).map_or(Self::NotFound, Self::GameOfLife),
             Some(_) => Self::NotFound,
         }
     }
@@ -66,8 +68,8 @@ impl<'a> Urls<'a> {
     pub fn home(self) -> Url {
         self.base_url()
     }
-    pub fn gameoflife_urls(self) -> game_of_life::game_of_life::Urls<'a> {
-        game_of_life::game_of_life::Urls::new(self.base_url().add_path_part(GAMEOFLIFE))
+    pub fn gameoflife_urls(self) -> page::game_of_life::Urls<'a> {
+        page::game_of_life::Urls::new(self.base_url().add_path_part(GAMEOFLIFE))
     }
 }
 
@@ -79,10 +81,8 @@ impl<'a> Urls<'a> {
 // `Msg` describes the different events you can modify state with.
 enum Msg {
     //Increment,
-    Start,
-    Tick(RenderInfo),
-    Stop,
     UrlChanged(subs::UrlChanged),
+    GameOfLifeMsg(page::game_of_life::Msg),
 }
 
 // `update` describes how to handle each `Msg`.
@@ -91,6 +91,12 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         {
             Msg::UrlChanged(subs::UrlChanged(url)) => {
                 model.page = Page::init(url);
+            }
+
+            Msg::GameOfLifeMsg(msg) => {
+                if let Page::GameOfLife(model) = &mut model.page {
+                    page::game_of_life::update(msg, model, &mut orders.proxy(Msg::GameOfLifeMsg));
+                }
             }
         } 
         
@@ -118,20 +124,20 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
                         .go_and_load())
                 ]
             ],
-            Page::GameOfLife(gameoflife_model) => game_of_life::game_of_life::view(gameoflife_model),
+            Page::GameOfLife(gameoflife_model) => page::game_of_life::view(gameoflife_model).map_msg(Msg::GameOfLifeMsg),
             Page::NotFound => div!["404"],
         },
     ]
 }
 
-pub fn header(model: &Model) -> Node<Msg>{
+fn header(model: &Model) -> Node<Msg>{
     ul![
         li![a![
-            attrs! { At::Href => Urls::new(model.base_url).home() },
+            attrs! { At::Href => Urls::new(&model.base_url).home() },
             "Home",
         ]],
         li![a![
-            attrs! { At::Href => Urls::new(model.base_url).gameoflife_urls().default() },
+            attrs! { At::Href => Urls::new(&model.base_url).gameoflife_urls().default() },
             "Game of Life",
         ]],
     ]

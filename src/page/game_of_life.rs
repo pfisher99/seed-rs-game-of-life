@@ -1,7 +1,7 @@
 use seed::{prelude::*, *};
 
 
-const GAMEOFLIFE: &str = "game-of-life";
+const GAMEOFLIFE: &str = "game-of-life-rust";
 
 // ------ ------
 //     Init
@@ -144,7 +144,7 @@ pub enum Cell {
 // (Remove the line below once any of your `Msg` variants doesn't implement `Copy`.)
 #[derive(Copy, Clone)]
 // `Msg` describes the different events you can modify state with.
-enum Msg {
+pub enum Msg {
     //Increment,
     Start,
     Tick(RenderInfo),
@@ -152,7 +152,7 @@ enum Msg {
 }
 
 // `update` describes how to handle each `Msg`.
-fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
+pub fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
     match msg 
         {
             //Msg::Increment => {model.tick(); model.counter += 1;}
@@ -188,7 +188,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 //     View
 // ------ ------
 
-pub fn view<Ms>(model: &Model) -> Node<Msg> {
+pub fn view(model: &Model) -> Node<Msg> {
 
 
     div![
