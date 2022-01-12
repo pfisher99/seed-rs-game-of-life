@@ -36,8 +36,8 @@ struct Model {
 
 impl Model {
     fn new(random: bool) -> Model {
-        let width = 92;
-        let height = 92;
+        let width = 48;
+        let height = 48;
         let mut x = 2;
         let mut y = 7;
 
@@ -129,7 +129,7 @@ impl Model {
             for line in self.cells.as_slice().chunks(self.width as usize) {
                 for &cell in line {
                     
-                    let symbol = if cell == Cell::Dead { '░' } else { '▓' };
+                    let symbol = if cell == Cell::Dead { '🌿' } else { '🐦' };
                     s.push(symbol);
                 }
 

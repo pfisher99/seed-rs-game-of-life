@@ -4,13 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="modulepreload" href="https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d.js" as="script" type="text/javascript">
-    <link rel="preload" href="https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d_bg.wasm" as="fetch" type="application/wasm" crossorigin="anonymous">
+    <link rel="modulepreload" href="https://rust.thepatrickfisher.com/release/game_of_life/index-6fb6e243698b3da4.js" as="script" type="text/javascript">
+    <link rel="preload" href="https://rust.thepatrickfisher.com/release/game_of_life/index-6fb6e243698b3da4_bg.wasm" as="fetch" type="application/wasm" crossorigin="anonymous">
     <style>
         body {
           position: absolute;
           top: 0;
-          left: 0;
           width: 100%;
           height: 45px;
           display: flex;
@@ -22,7 +21,6 @@
         .gameclass {
           position: relative;
           top: 0px;
-          left: 0;
           width: 100%;
           height: 100%;
           display: flex;
@@ -30,8 +28,8 @@
           align-items: normal;
           justify-content: center;
           white-space: pre-wrap;
-          line-height: 10px;
-          font-size: 10px;
+          line-height: 16px;          
+          font-size: 16px;
           padding-top: 4px;
           text-align: center;
         }
@@ -61,8 +59,8 @@
 <body>
     <section id="app"></section>
     <script type="module">
-        import init from 'https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d.js';
-        init('https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d_bg.wasm');
+        import init from 'https://rust.thepatrickfisher.com/release/game_of_life/index-6fb6e243698b3da4.js';
+        init('https://rust.thepatrickfisher.com/release/game_of_life/index-6fb6e243698b3da4_bg.wasm');
     </script>
 </body>
 
