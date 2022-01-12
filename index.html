@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="modulepreload" href="/coding/game-of-life-rust/pkg/seed_rs_page.js" as="script" type="text/javascript">
-    <link rel="preload" href="/coding/game-of-life-rust/pkg/seed_rs_page_bg.wasm" as="fetch" type="application/wasm" crossorigin="anonymous">
+    <link rel="modulepreload" href="https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d.js" as="script" type="text/javascript">
+    <link rel="preload" href="https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d_bg.wasm" as="fetch" type="application/wasm" crossorigin="anonymous">
     <style>
         body {
           position: absolute;
@@ -39,8 +39,7 @@
         .about {
           position: relative;
           text-align: right;
-          padding-left: 4px;
-          width: 100%;
+          width: 80%;
         }
 
         .counter {
@@ -62,8 +61,8 @@
 <body>
     <section id="app"></section>
     <script type="module">
-        import init from '/coding/game-of-life-rust/pkg/seed_rs_page.js';
-        init('/coding/game-of-life-rust/pkg/seed_rs_page_bg.wasm');
+        import init from 'https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d.js';
+        init('https://rust.thepatrickfisher.com/release/game_of_life/index-f19424ef2460b9d_bg.wasm');
     </script>
 </body>
 

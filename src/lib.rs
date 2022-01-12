@@ -4,6 +4,9 @@
 #![allow(clippy::wildcard_imports)]
 
 
+extern crate rand;
+
+use rand::prelude::*;
 
 use seed::{prelude::*, *};
 
@@ -35,10 +38,21 @@ impl Model {
     fn new(random: bool) -> Model {
         let width = 92;
         let height = 92;
+        let mut x = 2;
+        let mut y = 7;
+
+        match random {
+            true => {
+                let mut rng = thread_rng();
+                x = rng.gen_range(1..10);
+                y = rng.gen_range(1..10);
+            },
+            false => {}
+        }
 
         let cells = (0..width * height)
         .map(|i| {
-            if i % 2 == 0 || i % 7 == 0 {
+            if i % x == 0 || i % y == 0 {
                 Cell::Alive
             } else {Cell::Dead}
         })
@@ -145,7 +159,8 @@ enum Msg {
     //Increment,
     Start,
     Tick(RenderInfo),
-    Stop
+    Stop,
+    ResetRandom,
 }
 
 // `update` describes how to handle each `Msg`.
@@ -165,19 +180,27 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
             Msg::Tick(render_info) => {
                 let delta = render_info.timestamp_delta.unwrap_or_default();
+                
+                match model.stop {
+                    false => {orders.after_next_render(Msg::Tick);}
+                    true => {return}
+                }
+                
                 if delta > 0. {
                     model.tick();
                     model.counter += 1;
-                }
-                match model.stop {
-                    false => {orders.after_next_render(Msg::Tick);}
-                    true => {}
                 }
 
             }
 
             Msg::Stop => {
                 model.stop = true;
+            }
+
+            Msg::ResetRandom => {
+                model.stop = true;
+                *model = Model::new(true);
+                
             }
 
         } 
@@ -205,13 +228,14 @@ fn view(model: &Model) -> Node<Msg> {
         div![
         C!["about"],
         a![attrs!{At::Href => "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life", At::Target => "_blank"},
-        "About Conway's Game of Life"]], 
+        "About"]], 
 
 
         div![
         C!["buttons"], 
         button!["Start", ev(Ev::Click, |_| Msg::Start)],
         button!["Stop", ev(Ev::Click, |_| Msg::Stop)],
+        button!["Random", ev(Ev::Click, |_| Msg::ResetRandom)],
         ],
 
         div![
