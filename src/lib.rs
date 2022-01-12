@@ -15,7 +15,7 @@ use seed::{prelude::*, *};
 fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
 
     //orders.after_next_render(Msg::Increment);
-    Model::new()
+    Model::new(false)
 }
 
 // ------ ------
@@ -32,7 +32,7 @@ struct Model {
 }
 
 impl Model {
-    fn new() -> Model {
+    fn new(random: bool) -> Model {
         let width = 92;
         let height = 92;
 
@@ -49,7 +49,7 @@ impl Model {
             height, 
             cells,
             counter: 0,
-            stop: false
+            stop: true,
         }
     }
     
@@ -156,7 +156,10 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         
             Msg::Start => 
             {
-                model.stop = false;
+                match model.stop {
+                    true => model.stop = false,
+                    false => return
+                }
                 orders.after_next_render(Msg::Tick);
             }
 
@@ -191,18 +194,31 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 // `view` describes what to display.
 fn view(model: &Model) -> Node<Msg> {
     
+    div![
+        div![
+        C!["counter"],
+        attrs!{ At::Id => "counter"},
+        "Ticks: ",
+        model.counter],
+        
 
         div![
-        "Ticks: ",
-        C!["counter"],
-        attrs!{ At::Id => "counter"}, model.counter,
-        div![button!["Start", ev(Ev::Click, |_| Msg::Start)],
-        button!["Stop", ev(Ev::Click, |_| Msg::Stop)]
+        C!["about"],
+        a![attrs!{At::Href => "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life", At::Target => "_blank"},
+        "About Conway's Game of Life"]], 
+
+
+        div![
+        C!["buttons"], 
+        button!["Start", ev(Ev::Click, |_| Msg::Start)],
+        button!["Stop", ev(Ev::Click, |_| Msg::Stop)],
         ],
 
-        div![attrs!{At::Class => "gameclass"}, model.get_string()],
+        div![
+        attrs!{At::Class => "gameclass"},
+        model.get_string()],
         
-        ]
+    ]
 }
 
 // ------ ------
