@@ -52,7 +52,7 @@ impl Model {
 
         let cells = (0..width * height)
         .map(|i| {
-            if i % x == 0 || i % y == 0 {
+            if i % firstalive == 0 || i % secondalive == 0 {
                 Cell::Alive
             } else {Cell::Dead}
         })
