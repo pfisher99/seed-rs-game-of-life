@@ -18,7 +18,7 @@ use seed::{prelude::*, *};
 fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
 
     //orders.after_next_render(Msg::Increment);
-    Model::new(false)
+    Model::new(48, 48, false)
 }
 
 // ------ ------
@@ -35,9 +35,7 @@ struct Model {
 }
 
 impl Model {
-    fn new(random: bool) -> Model {
-        let width = 48;
-        let height = 48;
+    fn new(width: u32, height: u32, random: bool) -> Model {
         let mut firstalive = 2;
         let mut secondalive = 7;
 
@@ -162,6 +160,7 @@ enum Msg {
     Stop,
     Shuffle,
     Reset,
+    Resize((u32, u32)),
 }
 
 // `update` describes how to handle each `Msg`.
@@ -200,13 +199,18 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
             Msg::Shuffle => {
                 model.stop = true;
-                *model = Model::new(true);
+                *model = Model::new(model.width, model.height, true);
                 
             }
 
             Msg::Reset => {
                 model.stop = true;
-                *model = Model::new(false);
+                *model = Model::new(model.width, model.height, false);
+            }
+
+            Msg::Resize(size) => {
+                model.stop = true;
+                *model = Model::new(size.0, size.1, false);
             }
 
         } 
@@ -243,6 +247,7 @@ fn view(model: &Model) -> Node<Msg> {
         button!["Stop", ev(Ev::Click, |_| Msg::Stop)],
         button!["Shuffle", ev(Ev::Click, |_| Msg::Shuffle)],
         button!["Reset", ev(Ev::Click, |_| Msg::Reset)],
+        button!["Resize", ev(Ev::Click, |_| Msg::Resize((1,1)))],
         ],
 
         div![
