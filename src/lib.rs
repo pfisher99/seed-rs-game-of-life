@@ -31,7 +31,8 @@ struct Model {
     height: u32,
     cells: Vec<Cell>,
     counter: u32,
-    stop: bool
+    stop: bool,
+    defaultsize: (u32, u32)
 }
 
 impl Model {
@@ -62,6 +63,7 @@ impl Model {
             cells,
             counter: 0,
             stop: true,
+            defaultsize: (48, 48)
         }
     }
     
@@ -205,7 +207,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
             Msg::Reset => {
                 model.stop = true;
-                *model = Model::new(model.width, model.height, false);
+                *model = Model::new(model.defaultsize.0, model.defaultsize.1, false);
             }
 
             Msg::Resize(size) => {
