@@ -38,14 +38,14 @@ impl Model {
     fn new(random: bool) -> Model {
         let width = 48;
         let height = 48;
-        let mut x = 2;
-        let mut y = 7;
+        let mut firstalive = 2;
+        let mut secondalive = 7;
 
         match random {
             true => {
                 let mut rng = thread_rng();
-                x = rng.gen_range(1..10);
-                y = rng.gen_range(1..10);
+                firstalive = rng.gen_range(1..10);
+                secondalive = rng.gen_range(1..10);
             },
             false => {}
         }
@@ -160,7 +160,8 @@ enum Msg {
     Start,
     Tick(RenderInfo),
     Stop,
-    ResetRandom,
+    Shuffle,
+    Reset,
 }
 
 // `update` describes how to handle each `Msg`.
@@ -197,10 +198,15 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
                 model.stop = true;
             }
 
-            Msg::ResetRandom => {
+            Msg::Shuffle => {
                 model.stop = true;
                 *model = Model::new(true);
                 
+            }
+
+            Msg::Reset => {
+                model.stop = true;
+                *model = Model::new(false);
             }
 
         } 
@@ -235,7 +241,8 @@ fn view(model: &Model) -> Node<Msg> {
         C!["buttons"], 
         button!["Start", ev(Ev::Click, |_| Msg::Start)],
         button!["Stop", ev(Ev::Click, |_| Msg::Stop)],
-        button!["Random", ev(Ev::Click, |_| Msg::ResetRandom)],
+        button!["Shuffle", ev(Ev::Click, |_| Msg::Shuffle)],
+        button!["Reset", ev(Ev::Click, |_| Msg::Reset)],
         ],
 
         div![
