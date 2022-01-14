@@ -32,7 +32,8 @@ struct Model {
     cells: Vec<Cell>,
     counter: u32,
     stop: bool,
-    defaultsize: (u32, u32)
+    defaultsize: (u32, u32),
+    newsize: (u32, u32)
 }
 
 impl Model {
@@ -63,7 +64,8 @@ impl Model {
             cells,
             counter: 0,
             stop: true,
-            defaultsize: (48, 48)
+            defaultsize: (48, 48),
+            newsize: (48, 48)
         }
     }
     
@@ -153,7 +155,7 @@ pub enum Cell {
 // ------ ------
 
 // (Remove the line below once any of your `Msg` variants doesn't implement `Copy`.)
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 // `Msg` describes the different events you can modify state with.
 enum Msg {
     //Increment,
@@ -162,7 +164,9 @@ enum Msg {
     Stop,
     Shuffle,
     Reset,
-    Resize((u32, u32)),
+    Resize,
+    SetX(String),
+    SetY(String),
 }
 
 // `update` describes how to handle each `Msg`.
@@ -210,10 +214,28 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
                 *model = Model::new(model.defaultsize.0, model.defaultsize.1, false);
             }
 
-            Msg::Resize(size) => {
+            Msg::Resize => {
                 model.stop = true;
+                let mut size = (model.newsize.0, model.newsize.1);
+                if size == (0,0) {size.0 = model.defaultsize.0; size.1 = model.defaultsize.1;};
                 *model = Model::new(size.0, size.1, false);
             }
+
+            Msg::SetX(x) => {
+                let check = x.parse::<u32>();
+                match check {
+                    Ok(x) => {model.newsize.0 = x; }
+                    _ => {}
+                }
+            }
+
+            Msg::SetY(y) => {
+                let check = y.parse::<u32>();
+                match check {
+                    Ok(y) => {model.newsize.1 = y; }
+                    _ => {}
+            }
+        }
 
         } 
         
@@ -249,7 +271,48 @@ fn view(model: &Model) -> Node<Msg> {
         button!["Stop", ev(Ev::Click, |_| Msg::Stop)],
         button!["Shuffle", ev(Ev::Click, |_| Msg::Shuffle)],
         button!["Reset", ev(Ev::Click, |_| Msg::Reset)],
-        button!["Resize", ev(Ev::Click, |_| Msg::Resize((1,1)))],
+        button!["Resize", ev(Ev::Click, move |_| Msg::Resize)],
+
+        input![C!["input"], 
+        style!{
+            
+            St::BoxShadow => "none",
+            St::BackgroundColor => "transparent",
+            St::Height => rem(2),
+            St::Border => "none",
+            St::BorderBottom => format!("{} {} {}", "solid", "#3273dc", px(2)),
+            St::MaxWidth => percent(55),
+        },
+        attrs!{
+            //At::Value => "1",
+            At::Type => "number",
+            At::Min => "1",
+            At::Max => "10"
+        },
+        input_ev(Ev::Input, move |x| Msg::SetX(x)),
+        
+    ],
+
+    input![C!["input"], 
+    style!{
+        
+        St::BoxShadow => "none",
+        St::BackgroundColor => "transparent",
+        St::Height => rem(2),
+        St::Border => "none",
+        St::BorderBottom => format!("{} {} {}", "solid", "#3273dc", px(2)),
+        St::MaxWidth => percent(55),
+    },
+    attrs!{
+        //At::Value => "2",
+        At::Type => "number",
+        At::Min => "1",
+        At::Max => "10"
+    },
+    input_ev(Ev::Input, move |y| Msg::SetY(y)),
+    
+],
+
         ],
 
         div![
