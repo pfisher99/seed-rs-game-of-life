@@ -65,7 +65,7 @@ impl Model {
             counter: 0,
             stop: true,
             defaultsize: (48, 48),
-            newsize: (48, 48)
+            newsize: (width, height)
         }
     }
     
@@ -284,10 +284,10 @@ fn view(model: &Model) -> Node<Msg> {
             St::MaxWidth => percent(55),
         },
         attrs!{
-            //At::Value => "1",
+            //At::Value => "48",
             At::Type => "number",
             At::Min => "1",
-            At::Max => "10"
+            At::Max => "256"
         },
         input_ev(Ev::Input, move |x| Msg::SetX(x)),
         
@@ -304,14 +304,18 @@ fn view(model: &Model) -> Node<Msg> {
         St::MaxWidth => percent(55),
     },
     attrs!{
-        //At::Value => "2",
+        //At::Value => "48",
         At::Type => "number",
         At::Min => "1",
-        At::Max => "10"
+        At::Max => "256"
     },
     input_ev(Ev::Input, move |y| Msg::SetY(y)),
     
 ],
+    " ",
+    "X: ", model.newsize.0,
+    " ",
+    "Y: ", model.newsize.1,
 
         ],
 
